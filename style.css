@@ -1,0 +1,1002 @@
+/* =====================================================================
+   style.css  –  Pixel-art & Paper UI System styling
+   ===================================================================== */
+
+@font-face {
+  font-family: "AbaddonBold";
+  src: url("assets/fonts/abaddon-bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "AbaddonLight";
+  src: url("assets/fonts/abaddon-light.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "AntiquityPrint";
+  src: url("assets/fonts/antiquity-print.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --ink:      #3d2516;
+  --ink-soft: #6e4c36;
+  --cream:    #ecddc0;
+  --tan:      #d3be9a;
+  --green:    #1f7a4c;
+  --red:      #b5332a;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  image-rendering: pixelated;
+}
+
+html, body {
+  margin: 0;
+  min-height: 100%;
+  font-family: "AbaddonBold", monospace;
+  color: var(--ink);
+  background: #000;
+  overflow-x: hidden;
+}
+
+body.dark  { background: #000; }
+body.white { background: #fffdf7; transition: background 0.6s ease; }
+
+.hidden { display: none !important; }
+
+/* ------------------------------ Screens ------------------------------ */
+.screen {
+  display: none;
+  min-height: 100vh;
+  min-height: 100dvh;
+  width: 100%;
+  padding: max(1rem, env(safe-area-inset-top)) 1rem max(1rem, env(safe-area-inset-bottom));
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+.screen.active { display: flex; animation: fadeIn 0.5s ease both; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* Book desk background from Paper UI System */
+.screen.desk {
+  background: #8c5a3c url("assets/ui/desk.png") center / cover no-repeat fixed;
+}
+.screen.desk.dark-desk {
+  background: #3d271d url("assets/ui/desk-dark.png") center / cover no-repeat fixed;
+}
+
+/* White flash overlay for Boot -> Fox transition */
+.whiteout {
+  position: fixed;
+  inset: 0;
+  background: #ffffff;
+  z-index: 8000;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.7s ease;
+}
+.whiteout.flash { opacity: 1; }
+
+/* ------------------------------ 1) Boot screen ------------------------------ */
+#boot {
+  background: #000;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  padding-top: 2rem;
+  font-family: "AbaddonBold", monospace;
+  color: #33ff66;
+  text-shadow: 0 0 8px rgba(51, 255, 102, 0.75);
+}
+#boot-text {
+  margin: 0;
+  font: inherit;
+  font-size: clamp(1.1rem, 4.4vw, 1.5rem);
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.7;
+  letter-spacing: 0.5px;
+}
+.cursor {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.1em;
+  margin-left: 4px;
+  background: #33ff66;
+  animation: blink 0.8s steps(1) infinite;
+  align-self: flex-end;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+.ghost-btn {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  background: rgba(0, 0, 0, 0.4);
+  border: 2px solid currentColor;
+  color: inherit;
+  font-family: "AbaddonBold", monospace;
+  font-size: 1rem;
+  padding: 0.35rem 0.85rem;
+  cursor: pointer;
+  opacity: 0.65;
+  z-index: 20;
+}
+.ghost-btn:hover { opacity: 1; }
+.ghost-btn.dark {
+  position: static;
+  background: rgba(255, 248, 230, 0.85);
+  color: var(--ink);
+  border-color: var(--ink-soft);
+}
+
+/* ------------------------------ Paper UI System Primitives ------------------------------ */
+.paper {
+  background-color: var(--cream);
+  border-style: solid;
+  border-width: 32px;
+  border-image: url("assets/ui/paper-card.png") 32 fill stretch;
+  box-shadow: 0 10px 26px rgba(30, 12, 4, 0.35);
+}
+
+.ribbon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "AntiquityPrint", "AbaddonBold", serif;
+  color: var(--ink);
+  border-style: solid;
+  border-width: 0 36px 0 42px;
+  min-height: 44px;
+  padding: 0.35rem 0.6rem;
+  background: none;
+  text-decoration: none;
+  line-height: 1.15;
+  font-size: clamp(0.95rem, 3.8vw, 1.15rem);
+}
+.ribbon.green { border-image: url("assets/ui/ribbon-green.png") 0 32 0 32 fill stretch; }
+.ribbon.red   { border-image: url("assets/ui/ribbon-red.png")   0 32 0 32 fill stretch; }
+.ribbon.tan   { border-image: url("assets/ui/ribbon-tan.png")   0 32 0 32 fill stretch; }
+
+.ribbon-btn {
+  cursor: pointer;
+  transition: transform 0.12s ease, filter 0.12s ease;
+  touch-action: manipulation;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.28));
+}
+.ribbon-btn.big {
+  font-size: clamp(1.05rem, 4.4vw, 1.35rem);
+  min-height: 52px;
+  padding: 0.5rem 1.1rem;
+}
+.ribbon-btn:hover:not(:disabled)  { transform: translateY(-2px) scale(1.03); filter: brightness(1.05) drop-shadow(0 6px 10px rgba(0,0,0,0.32)); }
+.ribbon-btn:active:not(:disabled) { transform: scale(0.96); }
+
+/* ------------------------------ 2) Fox Intro Scene ------------------------------ */
+#fox-scene {
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.2rem;
+  background: radial-gradient(circle at 50% 35%, #ffffff 0%, #fff6e8 70%, #f5e2c8 100%);
+}
+
+.fox-stage {
+  position: relative;
+  width: min(100%, 520px);
+  height: 210px;
+  overflow: hidden;
+  border-bottom: 4px solid #c9a77d;
+}
+.ground {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 22px;
+  background: repeating-linear-gradient(90deg, #dbbd96 0 18px, #cfa97e 18px 36px);
+}
+
+/* Fox sprite: 32x32 cell scaled 4x -> 128x128 (sheet 448x224 -> 1792x896) */
+#fox.sprite {
+  position: absolute;
+  bottom: 14px;
+  left: -140px;
+  width: 128px;
+  height: 128px;
+  background-image: url("assets/img/fox-sprites.png");
+  background-repeat: no-repeat;
+  background-size: 1792px 896px;
+  transition: left 2.1s linear;
+}
+#fox.sprite.walk-in {
+  left: calc(50% - 64px);
+}
+
+/* Expression bubble above the fox (SpeechBubbles.png crop: 11x12 -> 44x48) */
+.fox-bubble {
+  position: absolute;
+  bottom: 138px;
+  left: calc(50% + 12px);
+  width: 44px;
+  height: 48px;
+  animation: popBounce 0.45s ease infinite alternate;
+}
+@keyframes popBounce {
+  from { transform: translateY(0) scale(1); }
+  to   { transform: translateY(-7px) scale(1.08); }
+}
+
+.dialogue {
+  position: relative;
+  width: min(100%, 520px);
+  cursor: pointer;
+  user-select: none;
+}
+.dlg-name {
+  position: relative;
+  z-index: 2;
+  margin-left: 12px;
+  margin-bottom: -14px;
+  font-size: 1rem;
+}
+.dlg-paper {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  min-height: 120px;
+  padding: 0.2rem 0.4rem;
+}
+.dlg-portrait {
+  flex: 0 0 68px;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dlg-portrait img {
+  width: 68px;
+  height: 68px;
+  object-fit: contain;
+}
+.dlg-text {
+  margin: 0;
+  font-family: "AbaddonBold", monospace;
+  font-size: clamp(1.15rem, 4.6vw, 1.45rem);
+  line-height: 1.45;
+  color: var(--ink);
+  flex: 1;
+}
+.dlg-next {
+  position: absolute;
+  right: 18px;
+  bottom: 14px;
+  width: 33px;
+  height: 36px;
+  animation: popBounce 0.55s ease infinite alternate;
+}
+
+/* ------------------------------ 3) Quiz + Photo Puzzle ------------------------------ */
+#quiz { align-items: flex-start; }
+
+.quiz-wrap {
+  width: min(100%, 540px);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.25rem 0 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.header-ribbon {
+  width: min(100%, 360px);
+  aspect-ratio: 448 / 128;
+  background: url("assets/ui/header-ribbon.png") center / contain no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "AntiquityPrint", serif;
+  font-size: clamp(1rem, 4.2vw, 1.3rem);
+  color: var(--ink);
+  padding-bottom: 6px;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.35));
+}
+
+.progress-icons {
+  display: flex;
+  gap: 0.45rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.progress-icons img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  filter: grayscale(1) opacity(0.45);
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+.progress-icons img.done {
+  filter: none;
+  transform: scale(1.15);
+}
+
+/* Puzzle board */
+.puzzle {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-style: solid;
+  border-width: 18px;
+  border-image: url("assets/ui/paper-card-tan.png") 32 fill stretch;
+  box-shadow: 0 10px 28px rgba(25, 10, 2, 0.45);
+  overflow: hidden;
+}
+.puzzle-photo {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+}
+.puzzle-tiles {
+  position: absolute;
+  inset: 0;
+  display: grid;
+}
+.tile {
+  background-color: var(--cream);
+  border-style: solid;
+  border-width: 14px;
+  border-image: url("assets/ui/paper-card.png") 32 fill stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.75s ease, transform 0.75s ease;
+}
+.tile img {
+  width: clamp(38px, 11vw, 58px);
+  height: clamp(38px, 11vw, 58px);
+  object-fit: contain;
+}
+.tile.revealed {
+  opacity: 0;
+  transform: scale(1.25) rotate(8deg);
+  pointer-events: none;
+}
+
+.puzzle.complete {
+  animation: warmGlow 2s ease-in-out infinite;
+}
+@keyframes warmGlow {
+  0%, 100% { box-shadow: 0 0 18px 4px rgba(255, 223, 148, 0.7), 0 10px 28px rgba(0,0,0,0.45); }
+  50%      { box-shadow: 0 0 36px 12px rgba(255, 200, 110, 0.95), 0 0 64px 20px rgba(255, 240, 200, 0.7); }
+}
+
+/* Question card */
+.card {
+  width: 100%;
+  position: relative;
+  padding-top: 0.4rem;
+}
+.mood {
+  display: flex;
+  justify-content: center;
+  margin-top: -18px;
+  margin-bottom: 0.25rem;
+}
+.mood img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.2));
+}
+.card h2 {
+  font-family: "AntiquityPrint", "AbaddonBold", serif;
+  font-size: clamp(1rem, 4.2vw, 1.3rem);
+  text-align: center;
+  margin: 0.2rem 0 0.9rem;
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+.options {
+  display: grid;
+  gap: 0.55rem;
+}
+.option {
+  width: 100%;
+  text-align: left;
+  font-family: "AbaddonBold", monospace;
+  font-size: clamp(1.05rem, 4.3vw, 1.3rem);
+  color: var(--ink);
+  cursor: pointer;
+  border-style: solid;
+  border-width: 0 36px 0 42px;
+  border-image: url("assets/ui/ribbon-tan.png") 0 32 0 32 fill stretch;
+  background: none;
+  min-height: 46px;
+  padding: 0.45rem 0.5rem;
+  transition: transform 0.14s ease, filter 0.14s ease;
+  touch-action: manipulation;
+}
+.option:hover:not(:disabled) {
+  transform: translateX(4px);
+  filter: brightness(1.05);
+}
+.option:disabled { cursor: not-allowed; }
+.option.correct {
+  border-image-source: url("assets/ui/ribbon-green.png");
+  color: var(--green);
+  animation: pop 0.35s ease;
+}
+.option.wrong {
+  border-image-source: url("assets/ui/ribbon-red.png");
+  color: var(--red);
+  opacity: 0.65;
+  text-decoration: line-through;
+}
+@keyframes pop { 50% { transform: scale(1.04); } }
+
+.feedback {
+  min-height: 2.2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: "AbaddonBold", monospace;
+  font-size: clamp(1rem, 4vw, 1.2rem);
+  text-align: center;
+  margin: 0.65rem 0 0;
+}
+.feedback.good { color: var(--green); }
+.feedback.bad  { color: var(--red); }
+.fb-emote {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+}
+
+.complete-box {
+  text-align: center;
+  padding: 0.6rem 1rem;
+}
+.complete-text {
+  font-family: "AntiquityPrint", serif;
+  font-size: clamp(1.2rem, 5vw, 1.6rem);
+  color: #fff6e0;
+  text-shadow: 0 3px 8px rgba(0, 0, 0, 0.75);
+  margin: 0.4rem 0 0.9rem;
+}
+
+/* ------------------------------ 4) Grand Finale (The Note) ------------------------------ */
+#finale {
+  flex-direction: column;
+  justify-content: center;
+}
+.note-col {
+  width: min(100%, 460px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+  z-index: 2;
+}
+
+/* Note paper wrapper matching 416x448 static sprite and 288x336 appear animation */
+.note-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 416 / 448;
+  filter: drop-shadow(0 14px 32px rgba(0, 0, 0, 0.55));
+}
+.note-static {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.note-wrap.ready .note-static { opacity: 1; }
+
+/* Sprite-sheet page appear animation (6 cols x 6 rows of 288x336) */
+.note-anim {
+  position: absolute;
+  left: 11.5%;
+  top: 10.7%;
+  width: 77%;
+  height: 82%;
+  background-image: url("assets/ui/note-appear.png");
+  background-size: 600% 600%;
+  background-repeat: no-repeat;
+}
+.note-wrap.ready .note-anim { display: none; }
+
+/* Safe area inside the cream sheet (48..367 x 48..415 on 416x448) */
+.note-content {
+  position: absolute;
+  left: 14.5%;
+  right: 14.5%;
+  top: 13.5%;
+  bottom: 11.5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  text-align: center;
+  padding: 0.3rem;
+}
+.note-text {
+  margin: 0;
+  font-family: "AbaddonBold", monospace;
+  font-size: clamp(1.05rem, 4.3vw, 1.38rem);
+  line-height: 1.55;
+  color: var(--ink);
+  white-space: pre-wrap;
+}
+.note-text .type-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: var(--ink);
+  margin-left: 3px;
+  vertical-align: text-bottom;
+  animation: blink 0.8s steps(1) infinite;
+}
+
+.ask-emote {
+  width: clamp(68px, 20vw, 96px);
+  height: clamp(68px, 20vw, 96px);
+  object-fit: contain;
+  margin-bottom: 0.4rem;
+}
+.apology-question {
+  font-family: "AntiquityPrint", "AbaddonBold", serif;
+  font-size: clamp(1.1rem, 4.6vw, 1.5rem);
+  line-height: 1.4;
+  color: var(--ink);
+  margin: 0.3rem 0;
+  white-space: pre-wrap;
+}
+.no-taunt {
+  min-height: 2.2em;
+  font-family: "AbaddonBold", monospace;
+  font-size: clamp(1rem, 4vw, 1.2rem);
+  color: var(--red);
+  margin: 0.4rem 0 0;
+}
+
+.note-actions {
+  min-height: 68px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.answer-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.2rem;
+  min-height: 64px;
+  flex-wrap: wrap;
+}
+#no-btn.escaping {
+  position: fixed;
+  z-index: 700;
+  transition: left 0.22s ease-out, top 0.22s ease-out;
+}
+
+/* ------------------------------ Wrong Answer: Hack Attack + Skull ------------------------------ */
+.hack {
+  position: fixed;
+  inset: 0;
+  z-index: 9500;
+  background: #000;
+  color: #ff2a2a;
+  font-family: "AbaddonBold", monospace;
+  display: none;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 1.5rem;
+  overflow: hidden;
+}
+.hack.active { display: flex; }
+.hack.pitch-black * { opacity: 0 !important; }
+
+.scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 0, 0, 0.06) 0px,
+    rgba(255, 0, 0, 0.06) 2px,
+    transparent 2px,
+    transparent 4px
+  );
+  pointer-events: none;
+}
+
+.hack-log {
+  margin: 0;
+  font: inherit;
+  font-size: clamp(1rem, 4.2vw, 1.4rem);
+  line-height: 1.65;
+  white-space: pre-wrap;
+  word-break: break-word;
+  text-shadow: 0 0 8px rgba(255, 40, 40, 0.8);
+  z-index: 1;
+}
+
+.skull-box {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  z-index: 2;
+}
+.skull-box.show {
+  display: flex;
+}
+#skull {
+  width: 140px;
+  height: 140px;
+  image-rendering: pixelated;
+  transform: scale(0.3);
+  transition: transform 0.25s ease-out;
+}
+.skull-box.show #skull {
+  transform: scale(1);
+}
+.skull-box.rush #skull {
+  transition: transform 0.55s cubic-bezier(0.7, 0, 1, 1);
+  transform: scale(16);
+}
+.skull-text {
+  font-family: "AntiquityPrint", "AbaddonBold", monospace;
+  font-size: clamp(1.8rem, 8vw, 3.2rem);
+  color: #ff1e1e;
+  text-shadow: 0 0 16px #ff0000;
+  margin: 1rem 0 0;
+  letter-spacing: 2px;
+  animation: skullShake 0.1s infinite;
+}
+@keyframes skullShake {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(-4px, 3px); }
+  50%  { transform: translate(4px, -3px); }
+  75%  { transform: translate(-3px, -2px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* ------------------------------ Jumpscare ------------------------------ */
+.jumpscare {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+}
+.jumpscare.show {
+  display: flex;
+  animation: scareShake 0.09s linear infinite;
+}
+.jumpscare img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+@keyframes scareShake {
+  0%   { transform: translate(0, 0) scale(1.06); }
+  25%  { transform: translate(-16px, 10px) scale(1.12); }
+  50%  { transform: translate(14px, -12px) scale(1.08); }
+  75%  { transform: translate(-10px, -8px) scale(1.14); }
+  100% { transform: translate(0, 0) scale(1.06); }
+}
+
+/* ------------------------------ Floating Emotes & Confetti ------------------------------ */
+.floaters {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.floater {
+  position: absolute;
+  bottom: -60px;
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+  opacity: 0.45;
+  animation: floatUp linear infinite;
+}
+@keyframes floatUp {
+  from { transform: translateY(0) rotate(0deg); }
+  to   { transform: translateY(-115vh) rotate(25deg); }
+}
+
+#confetti {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9000;
+}
+
+/* ------------------------------ 0A) PIN Lock Screen ------------------------------ */
+.pin-wrap {
+  width: min(100%, 380px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.55rem;
+}
+.pin-wrap.shake {
+  animation: pinShake 0.36s ease;
+}
+@keyframes pinShake {
+  0%, 100% { transform: translateX(0); }
+  20%      { transform: translateX(-10px); }
+  40%      { transform: translateX(10px); }
+  60%      { transform: translateX(-7px); }
+  80%      { transform: translateX(7px); }
+}
+
+.pin-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  margin-top: -10px;
+}
+.pin-lock {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+.pin-emote {
+  width: 58px;
+  height: 58px;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.2));
+}
+.pin-title {
+  font-family: "AntiquityPrint", serif;
+  font-size: clamp(1.15rem, 4.8vw, 1.45rem);
+  margin: 0;
+  color: var(--ink);
+  letter-spacing: 1px;
+}
+.pin-subtitle {
+  margin: 0;
+  font-family: "AbaddonBold", monospace;
+  font-size: clamp(1rem, 4vw, 1.18rem);
+  color: var(--ink-soft);
+}
+.pin-subtitle.error { color: var(--red); }
+.pin-subtitle.ok    { color: var(--green); }
+
+.pin-dots {
+  display: flex;
+  gap: 0.65rem;
+  justify-content: center;
+  margin: 0.35rem 0;
+}
+.pin-dot {
+  width: 44px;
+  height: 48px;
+  background: #f8eed9;
+  border: 3px solid var(--ink);
+  box-shadow: inset 0 -4px 0 #d5c09b, 0 3px 0 rgba(61, 37, 22, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "AntiquityPrint", monospace;
+  font-size: 1.35rem;
+  color: var(--ink);
+  transition: transform 0.14s ease, background 0.14s ease, border-color 0.14s ease;
+}
+.pin-dot.filled {
+  background: #ffe3ec;
+  border-color: #b5332a;
+  transform: translateY(-2px);
+}
+.pin-dot.filled::after {
+  content: "*";
+  color: #b5332a;
+}
+.pin-dot.success {
+  background: #d8f5e3;
+  border-color: var(--green);
+}
+.pin-dot.success::after {
+  color: var(--green);
+}
+
+.pin-pad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 264px;
+  margin: 0.2rem 0;
+}
+.pin-key {
+  font-family: "AntiquityPrint", "AbaddonBold", monospace;
+  font-size: 1.15rem;
+  color: var(--ink);
+  background: #f7ebd2;
+  border: 3px solid var(--ink);
+  box-shadow: inset 0 -4px 0 #cfb68c, 0 4px 0 var(--ink);
+  height: 48px;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.12s ease;
+}
+.pin-key.action {
+  font-family: "AbaddonBold", monospace;
+  font-size: 1.05rem;
+  background: #e6d1ac;
+}
+.pin-key:hover  { background: #fff6e4; }
+.pin-key:active {
+  transform: translateY(3px);
+  box-shadow: inset 0 -2px 0 #cfb68c, 0 1px 0 var(--ink);
+}
+
+.bg-preload-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.35rem;
+  padding: 0.25rem 0.65rem;
+  background: rgba(61, 37, 22, 0.09);
+  border: 2px solid rgba(61, 37, 22, 0.25);
+  font-family: "AbaddonBold", monospace;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+}
+.preload-dot {
+  width: 8px;
+  height: 8px;
+  background: #e09f3e;
+  display: inline-block;
+  animation: blink 0.9s steps(1) infinite;
+}
+.preload-dot.ready {
+  background: var(--green);
+  animation: none;
+}
+
+/* ------------------------------ 0B) Detailed Animated Pixel-Art Loading Screen ------------------------------ */
+.loader-card {
+  width: min(100%, 440px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+}
+
+/* 40-frame Day & Night Arch Sprite (96x56 scaled 2x -> 192x112, 10 cols x 4 rows) */
+.sky-arch {
+  width: 192px;
+  height: 112px;
+  background-image: url("assets/ui/sky-sheet.png");
+  background-size: 1920px 448px;
+  background-repeat: no-repeat;
+  margin-top: -12px;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.28));
+}
+
+.pixel-diorama {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 320 / 140;
+  border: 4px solid var(--ink);
+  box-shadow: inset 0 0 0 2px #cfa97e, 0 6px 16px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+  background: #1b1936;
+}
+#loader-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  image-rendering: pixelated;
+}
+
+/* Running fox inside the loading diorama (32x32 scaled 3x -> 96x96) */
+.loader-fox {
+  position: absolute;
+  bottom: 10px;
+  left: calc(50% - 48px);
+  width: 96px;
+  height: 96px;
+  background-image: url("assets/img/fox-sprites.png");
+  background-repeat: no-repeat;
+  background-size: 1344px 672px;
+  filter: drop-shadow(0 3px 0 rgba(0, 0, 0, 0.35));
+}
+.loader-bubble {
+  position: absolute;
+  bottom: 94px;
+  left: calc(50% + 10px);
+  width: 33px;
+  height: 36px;
+  animation: popBounce 0.45s ease infinite alternate;
+}
+
+.loader-bar-wrap {
+  position: relative;
+  width: 100%;
+  padding-top: 16px;
+}
+.loader-bar-track {
+  width: 100%;
+  height: 24px;
+  background: #2b1a10;
+  border: 3px solid var(--ink);
+  box-shadow: inset 0 3px 0 rgba(0, 0, 0, 0.45);
+  padding: 3px;
+}
+.loader-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: repeating-linear-gradient(
+    90deg,
+    #ff6b9a 0px,
+    #ff6b9a 10px,
+    #ffd166 10px,
+    #ffd166 20px
+  );
+  transition: width 0.12s linear;
+}
+.loader-runner-icon {
+  position: absolute;
+  top: -8px;
+  left: 0%;
+  width: 34px;
+  height: 34px;
+  transform: translateX(-50%);
+  transition: left 0.12s linear;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.35));
+}
+
+.loader-meta {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "AbaddonBold", monospace;
+  font-size: clamp(1rem, 4vw, 1.2rem);
+  color: var(--ink);
+}
+.loader-percent {
+  font-family: "AntiquityPrint", monospace;
+  font-size: 1.1rem;
+  color: #b5332a;
+}

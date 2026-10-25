@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <!-- Private link: ask search engines not to index this page -->
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#000000" />
+  <title>For You</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="dark">
+
+  <!-- ===================== 0A) PRIVATE PIN LOCK SCREEN ===================== -->
+  <section id="pin-screen" class="screen desk dark-desk active">
+    <div class="pin-wrap paper" id="pin-card">
+      <div class="pin-top">
+        <img id="pin-lock" class="pin-lock" src="assets/ui/lock.png" alt="Lock" />
+        <img id="pin-emote" class="pin-emote" src="assets/img/fox/01.png" alt="" />
+      </div>
+      <h1 class="pin-title">PRIVATE ACCESS</h1>
+      <p id="pin-subtitle" class="pin-subtitle">Enter secret PIN to unlock</p>
+
+      <div id="pin-dots" class="pin-dots" aria-label="PIN digits">
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <div class="pin-pad" role="group" aria-label="PIN keypad">
+        <button type="button" class="pin-key" data-key="1">1</button>
+        <button type="button" class="pin-key" data-key="2">2</button>
+        <button type="button" class="pin-key" data-key="3">3</button>
+        <button type="button" class="pin-key" data-key="4">4</button>
+        <button type="button" class="pin-key" data-key="5">5</button>
+        <button type="button" class="pin-key" data-key="6">6</button>
+        <button type="button" class="pin-key" data-key="7">7</button>
+        <button type="button" class="pin-key" data-key="8">8</button>
+        <button type="button" class="pin-key" data-key="9">9</button>
+        <button type="button" class="pin-key action" data-key="CLR">CLR</button>
+        <button type="button" class="pin-key" data-key="0">0</button>
+        <button type="button" class="pin-key action" data-key="DEL">&laquo;</button>
+      </div>
+
+      <div class="bg-preload-pill">
+        <span class="preload-dot" id="preload-dot"></span>
+        <span id="bg-preload-text">Caching assets in background...</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 0B) ANIMATED PIXEL-ART LOADING SCREEN ===================== -->
+  <section id="loading-screen" class="screen desk dark-desk">
+    <div class="loader-card paper">
+      <!-- 40-frame animated Day & Night sky arch from Paper UI System -->
+      <div id="sky-arch" class="sky-arch" aria-hidden="true"></div>
+
+      <!-- Detailed multi-layer pixel-art diorama with running fox, parallax shop/clouds, particles & hearts -->
+      <div class="pixel-diorama">
+        <canvas id="loader-canvas" width="320" height="140"></canvas>
+        <div id="loader-fox" class="loader-fox" aria-hidden="true"></div>
+        <img id="loader-bubble" class="loader-bubble" src="assets/ui/bubble-0-0.png" alt="" />
+      </div>
+
+      <div class="loader-bar-wrap">
+        <div class="loader-bar-track">
+          <div id="loader-bar-fill" class="loader-bar-fill"></div>
+        </div>
+        <img id="loader-runner-icon" class="loader-runner-icon" src="assets/img/bunny/04.png" alt="" />
+      </div>
+
+      <div class="loader-meta">
+        <span id="loader-stage-text" class="loader-stage-text">Loading pixel world...</span>
+        <span id="loader-percent" class="loader-percent">0%</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 1) FAKE HACKER BOOT SCREEN (text lives in script.js -> CONFIG.bootLines) ===================== -->
+  <section id="boot" class="screen">
+    <pre id="boot-text" aria-live="polite"></pre>
+    <span class="cursor"></span>
+    <button id="boot-skip" class="ghost-btn" type="button">skip &raquo;</button>
+  </section>
+
+  <!-- ===================== 2) FOX INTRO (white screen, pixel fox + dialogue box) ===================== -->
+  <section id="fox-scene" class="screen">
+    <div class="fox-stage" id="fox-stage">
+      <div class="clouds" aria-hidden="true"></div>
+      <div class="ground" aria-hidden="true"></div>
+      <div id="fox" class="sprite" aria-label="A little pixel fox"></div>
+      <!-- speech bubble over the fox (SpeechBubbles.png crops) -->
+      <img id="fox-bubble" class="fox-bubble hidden" alt="" />
+    </div>
+
+    <div id="dialogue" class="dialogue hidden">
+      <div class="dlg-name ribbon green"><span id="dlg-name">Fox</span></div>
+      <div class="paper dlg-paper">
+        <div class="dlg-portrait"><img id="dlg-emote" alt="" /></div>
+        <p id="dlg-text" class="dlg-text"></p>
+      </div>
+      <img class="dlg-next" id="dlg-next" src="assets/ui/bubble-3-0.png" alt="tap to continue" />
+    </div>
+
+    <button id="go-btn" class="ribbon ribbon-btn green big hidden" type="button"></button>
+  </section>
+
+  <!-- ===================== 3) QUIZ + PHOTO PUZZLE ===================== -->
+  <section id="quiz" class="screen desk">
+    <div class="floaters" aria-hidden="true"></div>
+    <div class="quiz-wrap">
+
+      <div class="header-ribbon"><span id="progress-label">1 / 1</span></div>
+      <div id="progress-icons" class="progress-icons" aria-hidden="true"></div>
+
+      <!-- Hidden photo: the real photo sits underneath, cover tiles hide it -->
+      <div id="puzzle" class="puzzle" aria-label="Hidden photo puzzle">
+        <div id="puzzle-photo" class="puzzle-photo"></div>
+        <div id="puzzle-tiles" class="puzzle-tiles"></div>
+      </div>
+
+      <div id="question-card" class="paper card">
+        <div class="mood"><img id="mood-img" alt="" /></div>
+        <h2 id="question-text"></h2>
+        <div id="options" class="options"></div>
+        <p id="feedback" class="feedback"><img id="fb-emote" class="fb-emote hidden" alt="" /><span id="fb-text"></span></p>
+      </div>
+
+      <div id="complete-box" class="complete-box hidden">
+        <p id="complete-text" class="complete-text"></p>
+        <button id="continue-btn" class="ribbon ribbon-btn green big" type="button"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 4) THE NOTE (paper UI + typewriter) ===================== -->
+  <section id="finale" class="screen desk dark-desk">
+    <div class="floaters" aria-hidden="true"></div>
+    <div class="note-col">
+      <div id="note-wrap" class="note-wrap">
+        <img class="note-static" id="note-static" src="assets/ui/note-paper.png" alt="" />
+        <div class="note-anim" id="note-anim" aria-hidden="true"></div>
+
+        <!-- page 1: the note -->
+        <div class="note-content" id="note-page1">
+          <p id="note-text" class="note-text"></p>
+        </div>
+
+        <!-- page 2: the question -->
+        <div class="note-content hidden" id="note-page2">
+          <img id="ask-emote" class="ask-emote" alt="" />
+          <p id="apology-question" class="apology-question"></p>
+          <p id="no-taunt" class="no-taunt"></p>
+        </div>
+
+        <!-- page 3: she said yes -->
+        <div class="note-content hidden" id="note-page3">
+          <img id="final-emote" class="ask-emote" alt="" />
+          <p id="final-text" class="apology-question"></p>
+        </div>
+      </div>
+
+      <div id="note-actions" class="note-actions">
+        <button id="skip-note" class="ghost-btn dark" type="button">skip typing &raquo;</button>
+        <button id="next-btn" class="ribbon ribbon-btn green hidden" type="button"></button>
+        <div id="answer-row" class="answer-row hidden">
+          <button id="yes-btn" class="ribbon ribbon-btn green" type="button">Yes</button>
+          <button id="no-btn"  class="ribbon ribbon-btn red"   type="button">No</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== WRONG ANSWER: HACK ATTACK SEQUENCE ===================== -->
+  <div id="hack" class="hack" aria-hidden="true">
+    <div class="scanlines"></div>
+    <pre id="hack-log" class="hack-log"></pre>
+    <div id="skull-box" class="skull-box">
+      <canvas id="skull" width="16" height="16"></canvas>
+      <p id="skull-text" class="skull-text"></p>
+    </div>
+  </div>
+
+  <!-- JUMPSCARE (image + sound set in script.js -> CONFIG.assets) -->
+  <div id="jumpscare" class="jumpscare" aria-hidden="true"><img id="jumpscare-img" alt="" /></div>
+
+  <!-- Confetti canvas (always on top, doesn't block clicks) -->
+  <canvas id="confetti"></canvas>
+
+  <!-- White flash used for the boot -> fox transition -->
+  <div id="whiteout" class="whiteout"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

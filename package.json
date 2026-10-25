@@ -1,0 +1,10 @@
+{
+  "name": "apology-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Apology & Make-up web app (static site)",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  }
+}

@@ -1,0 +1,6 @@
+# Ignore raw source archives & huge wav (the app uses the extracted assets + compressed music.mp3)
+*.zip
+*.rar
+assets/UI&UX/
+assets/sounds/music/music.wav
+node_modules/
